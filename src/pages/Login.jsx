@@ -117,7 +117,6 @@ const Login = () => {
         </button>
       </form>
       <div style={{ marginTop: "1rem", textAlign: "center" }}>
-        <span>¿No tienes cuenta?</span>
         
         <p style={{ marginTop: "10px" }}>
           <button
