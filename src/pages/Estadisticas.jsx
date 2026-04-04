@@ -15,13 +15,12 @@ import {
 const Estadisticas = () => {
   const { products } = useSelector((state) => state.product);
   const [ordenes, setOrdenes] = useState([]);
-  const [ready, setReady] = useState(false); // 🔥 FIX CLAVE
 
   useEffect(() => {
     const obtenerOrdenes = async () => {
       try {
         const res = await axiosInstance.get("/api/orders");
-        setOrdenes(res.data);
+        setOrdenes(res.data || []);
       } catch (error) {
         console.error("Error al obtener órdenes:", error);
       }
@@ -30,19 +29,14 @@ const Estadisticas = () => {
     obtenerOrdenes();
   }, []);
 
-  // 🔥 Esperar a que el DOM esté listo
-  useEffect(() => {
-    setReady(true);
-  }, []);
-
   // 💰 INVERSIÓN REAL
   const inversionInicial = products.reduce((acc, p) => {
-    return acc + (p.montoSolicitado || 0);
+    return acc + Number(p.montoSolicitado || 0);
   }, 0);
 
   // 📈 TOTAL DEUDA
   const deudaTotal = products.reduce((acc, p) => {
-    return acc + (p.precio || 0);
+    return acc + Number(p.precio || 0);
   }, 0);
 
   // 💵 RECAUDADO
@@ -51,6 +45,7 @@ const Estadisticas = () => {
   }, 0);
 
   console.log("Órdenes:", ordenes);
+  console.log("Total recaudado:", totalRecaudado);
 
   // 💸 RESTANTE
   const restanteReal = deudaTotal - totalRecaudado;
@@ -67,7 +62,8 @@ const Estadisticas = () => {
 
   const COLORS = ["#00C49F", "#FF8042"];
 
-  if (ordenes.length === 0) {
+  // 🔥 IMPORTANTE: solo mostrar loading si aún no llegan órdenes
+  if (!ordenes) {
     return <p>Cargando datos...</p>;
   }
 
@@ -79,17 +75,17 @@ const Estadisticas = () => {
       <div style={{ display: "flex", gap: "20px", flexWrap: "wrap" }}>
         <div style={cardStyle}>
           <h3>💰 Inversión</h3>
-          <p>${inversionInicial.toFixed(1)}</p>
+          <p>${inversionInicial.toFixed(2)}</p>
         </div>
 
         <div style={cardStyle}>
           <h3>💵 Recaudado</h3>
-          <p>${totalRecaudado.toFixed(1)}</p>
+          <p>${totalRecaudado.toFixed(2)}</p>
         </div>
 
         <div style={cardStyle}>
           <h3>💰 Total cartera</h3>
-          <p>${deudaTotal.toFixed(1)}</p>
+          <p>${deudaTotal.toFixed(2)}</p>
         </div>
 
         <div style={cardStyle}>
@@ -100,7 +96,7 @@ const Estadisticas = () => {
               fontWeight: "bold",
             }}
           >
-            ${gananciaActual.toFixed(1)}
+            ${gananciaActual.toFixed(2)}
           </p>
         </div>
 
@@ -112,43 +108,36 @@ const Estadisticas = () => {
               fontWeight: "bold",
             }}
           >
-            ${gananciaTotal.toFixed(1)}
+            ${gananciaTotal.toFixed(2)}
           </p>
         </div>
       </div>
 
       {/* GRÁFICA */}
-      <div
-        style={{
-          width: "100%",
-          height: "400px",
-          marginTop: "40px",
-        }}
-      >
+      <div style={{ width: "100%", marginTop: "40px" }}>
         <h2>📊 Distribución real</h2>
 
-        {ready && (
-          <ResponsiveContainer width="100%" height={400}>
-            <PieChart>
-              <Pie
-                data={data}
-                dataKey="value"
-                nameKey="name"
-                outerRadius={120}
-                label
-              >
-                {data.map((entry, index) => (
-                  <Cell
-                    key={`cell-${index}`}
-                    fill={COLORS[index % COLORS.length]}
-                  />
-                ))}
-              </Pie>
-              <Tooltip />
-              <Legend />
-            </PieChart>
-          </ResponsiveContainer>
-        )}
+        {/* 🔥 FIX REAL AQUÍ */}
+        <ResponsiveContainer width="100%" height={400}>
+          <PieChart>
+            <Pie
+              data={data}
+              dataKey="value"
+              nameKey="name"
+              outerRadius={120}
+              label
+            >
+              {data.map((entry, index) => (
+                <Cell
+                  key={`cell-${index}`}
+                  fill={COLORS[index % COLORS.length]}
+                />
+              ))}
+            </Pie>
+            <Tooltip />
+            <Legend />
+          </PieChart>
+        </ResponsiveContainer>
       </div>
     </div>
   );
