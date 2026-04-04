@@ -14,7 +14,9 @@ import {
 
 const Estadisticas = () => {
   const { products } = useSelector((state) => state.product);
+
   const [ordenes, setOrdenes] = useState([]);
+  const [loading, setLoading] = useState(true); // 🔥 mejor que ready
 
   useEffect(() => {
     const obtenerOrdenes = async () => {
@@ -23,19 +25,25 @@ const Estadisticas = () => {
         setOrdenes(res.data || []);
       } catch (error) {
         console.error("Error al obtener órdenes:", error);
+        setOrdenes([]);
+      } finally {
+        setLoading(false);
       }
     };
 
     obtenerOrdenes();
   }, []);
 
+  // 🔥 PROTECCIÓN products
+  const listaProductos = Array.isArray(products) ? products : [];
+
   // 💰 INVERSIÓN REAL
-  const inversionInicial = products.reduce((acc, p) => {
+  const inversionInicial = listaProductos.reduce((acc, p) => {
     return acc + Number(p.montoSolicitado || 0);
   }, 0);
 
   // 📈 TOTAL DEUDA
-  const deudaTotal = products.reduce((acc, p) => {
+  const deudaTotal = listaProductos.reduce((acc, p) => {
     return acc + Number(p.precio || 0);
   }, 0);
 
@@ -44,26 +52,23 @@ const Estadisticas = () => {
     return acc + Number(o.total || 0);
   }, 0);
 
-  console.log("Órdenes:", ordenes);
-  console.log("Total recaudado:", totalRecaudado);
-
   // 💸 RESTANTE
-  const restanteReal = deudaTotal - totalRecaudado;
+  const restanteReal = Math.max(0, deudaTotal - totalRecaudado);
 
   // 🔥 GANANCIAS
   const gananciaActual = totalRecaudado - inversionInicial;
   const gananciaTotal = deudaTotal - inversionInicial;
 
-  // 📊 DATA
+  // 📊 DATA SEGURA
   const data = [
-    { name: "Recaudado", value: totalRecaudado },
-    { name: "Pendiente", value: restanteReal > 0 ? restanteReal : 0 },
+    { name: "Recaudado", value: totalRecaudado || 0 },
+    { name: "Pendiente", value: restanteReal || 0 },
   ];
 
   const COLORS = ["#00C49F", "#FF8042"];
 
-  // 🔥 IMPORTANTE: solo mostrar loading si aún no llegan órdenes
-  if (!ordenes) {
+  // 🔥 LOADING REAL
+  if (loading) {
     return <p>Cargando datos...</p>;
   }
 
@@ -114,30 +119,38 @@ const Estadisticas = () => {
       </div>
 
       {/* GRÁFICA */}
-      <div style={{ width: "100%", marginTop: "40px" }}>
+      <div
+        style={{
+          width: "100%",
+          height: "400px", // 🔥 CLAVE
+        }}
+      >
         <h2>📊 Distribución real</h2>
 
-        {/* 🔥 FIX REAL AQUÍ */}
-        <ResponsiveContainer width="100%" height={400}>
-          <PieChart>
-            <Pie
-              data={data}
-              dataKey="value"
-              nameKey="name"
-              outerRadius={120}
-              label
-            >
-              {data.map((entry, index) => (
-                <Cell
-                  key={`cell-${index}`}
-                  fill={COLORS[index % COLORS.length]}
-                />
-              ))}
-            </Pie>
-            <Tooltip />
-            <Legend />
-          </PieChart>
-        </ResponsiveContainer>
+        {data.every((d) => d.value === 0) ? (
+          <p>No hay datos para mostrar</p>
+        ) : (
+          <ResponsiveContainer width="100%" height="100%">
+            <PieChart>
+              <Pie
+                data={data}
+                dataKey="value"
+                nameKey="name"
+                outerRadius={120}
+                label
+              >
+                {data.map((entry, index) => (
+                  <Cell
+                    key={`cell-${index}`}
+                    fill={COLORS[index % COLORS.length]}
+                  />
+                ))}
+              </Pie>
+              <Tooltip />
+              <Legend />
+            </PieChart>
+          </ResponsiveContainer>
+        )}
       </div>
     </div>
   );
