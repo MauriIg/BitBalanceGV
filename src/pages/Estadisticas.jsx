@@ -118,7 +118,7 @@ const Estadisticas = () => {
       {/* GRÁFICA */}
       <div style={{ width: "100%", height: 400, marginTop: "40px" }}>
         <h2>📊 Distribución real</h2>
-        <ResponsiveContainer width="100%" height={400}>
+        <ResponsiveContainer>
           <PieChart>
             <Pie
               data={data}
