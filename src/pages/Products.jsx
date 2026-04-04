@@ -170,7 +170,7 @@ const Products = () => {
   📊 Estadísticas
 </button>
 <button onClick={() => navigate("/register")} style={{ marginRight: "10px" }}>
-          Add Nvo Admin
+          Add Admin
         </button>
         <button
           onClick={handleLogout}
