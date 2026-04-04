@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import axiosInstance from "../services/axiosInstance";
 
-
 // 📊 Recharts
 import {
   PieChart,
@@ -16,6 +15,7 @@ import {
 const Estadisticas = () => {
   const { products } = useSelector((state) => state.product);
   const [ordenes, setOrdenes] = useState([]);
+  const [ready, setReady] = useState(false); // 🔥 FIX CLAVE
 
   useEffect(() => {
     const obtenerOrdenes = async () => {
@@ -30,32 +30,36 @@ const Estadisticas = () => {
     obtenerOrdenes();
   }, []);
 
-  // 💰 INVERSIÓN REAL (lo que prestaste)
+  // 🔥 Esperar a que el DOM esté listo
+  useEffect(() => {
+    setReady(true);
+  }, []);
+
+  // 💰 INVERSIÓN REAL
   const inversionInicial = products.reduce((acc, p) => {
     return acc + (p.montoSolicitado || 0);
   }, 0);
 
-  // 📈 TOTAL DEUDA (con interés actual)
+  // 📈 TOTAL DEUDA
   const deudaTotal = products.reduce((acc, p) => {
     return acc + (p.precio || 0);
   }, 0);
 
-  // 💵 RECAUDADO (pagos reales)
+  // 💵 RECAUDADO
   const totalRecaudado = ordenes.reduce((acc, o) => {
     return acc + Number(o.total || 0);
   }, 0);
-  console.log(ordenes);
 
-  // 💸 LO QUE FALTA
+  console.log("Órdenes:", ordenes);
+
+  // 💸 RESTANTE
   const restanteReal = deudaTotal - totalRecaudado;
 
-  // 🔥 GANANCIA actual
+  // 🔥 GANANCIAS
   const gananciaActual = totalRecaudado - inversionInicial;
+  const gananciaTotal = deudaTotal - inversionInicial;
 
-  // 🔥 GANANCIA total
-  const gananciaTotal = (deudaTotal + totalRecaudado) - inversionInicial;
-
-  // 📊 DATA PARA GRÁFICA
+  // 📊 DATA
   const data = [
     { name: "Recaudado", value: totalRecaudado },
     { name: "Pendiente", value: restanteReal > 0 ? restanteReal : 0 },
@@ -82,8 +86,6 @@ const Estadisticas = () => {
           <h3>💵 Recaudado</h3>
           <p>${totalRecaudado.toFixed(1)}</p>
         </div>
-
-    
 
         <div style={cardStyle}>
           <h3>💰 Total cartera</h3>
@@ -117,36 +119,37 @@ const Estadisticas = () => {
 
       {/* GRÁFICA */}
       <div
-  style={{
-    width: "100%",
-    height: "400px",
-    minHeight: "400px",
-    marginTop: "40px",
-  }}
->
-  <h2>📊 Distribución real</h2>
-
-  <ResponsiveContainer width="100%" height="100%">
-    <PieChart>
-      <Pie
-        data={data}
-        dataKey="value"
-        nameKey="name"
-        outerRadius={120}
-        label
+        style={{
+          width: "100%",
+          height: "400px",
+          marginTop: "40px",
+        }}
       >
-        {data.map((entry, index) => (
-          <Cell
-            key={`cell-${index}`}
-            fill={COLORS[index % COLORS.length]}
-          />
-        ))}
-      </Pie>
-      <Tooltip />
-      <Legend />
-    </PieChart>
-  </ResponsiveContainer>
-</div>
+        <h2>📊 Distribución real</h2>
+
+        {ready && (
+          <ResponsiveContainer width="100%" height={400}>
+            <PieChart>
+              <Pie
+                data={data}
+                dataKey="value"
+                nameKey="name"
+                outerRadius={120}
+                label
+              >
+                {data.map((entry, index) => (
+                  <Cell
+                    key={`cell-${index}`}
+                    fill={COLORS[index % COLORS.length]}
+                  />
+                ))}
+              </Pie>
+              <Tooltip />
+              <Legend />
+            </PieChart>
+          </ResponsiveContainer>
+        )}
+      </div>
     </div>
   );
 };
