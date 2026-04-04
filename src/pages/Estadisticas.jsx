@@ -57,7 +57,7 @@ const Estadisticas = () => {
 
   // 🔥 GANANCIAS
   const gananciaActual = totalRecaudado - inversionInicial;
-  const gananciaTotal = deudaTotal - inversionInicial;
+  const gananciaTotal = deudaTotal + totalRecaudado - inversionInicial;
 
   // 📊 DATA SEGURA
   const data = [
