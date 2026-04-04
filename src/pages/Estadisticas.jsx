@@ -38,28 +38,26 @@ const Estadisticas = () => {
   const listaProductos = Array.isArray(products) ? products : [];
 
   // 💰 INVERSIÓN REAL
-  // 🔹 inversión inicial = lo que puse al inicio
-const inversionInicial = listaProductos.reduce(
-  (acc, p) => acc + Number(p.precio || 0),
-  0
-);
+  const inversionInicial = listaProductos.reduce((acc, p) => {
+    return acc + Number(p.montoSolicitado || 0);
+  }, 0);
 
-// 🔹 deuda total = lo que el cliente debe pagar (precio + intereses)
-const deudaTotal = listaProductos.reduce(
-  (acc, p) => acc + Number(p.totalAPagar || p.precio || 0),
-  0
-);
+  // 📈 TOTAL DEUDA
+  const deudaTotal = listaProductos.reduce((acc, p) => {
+    return acc + Number(p.totalAPagar || p.precio || 0);
+  }, 0);
 
-// 🔹 recaudado = lo que ya pagaron las órdenes
-const totalRecaudado = ordenes.reduce(
-  (acc, o) => acc + Number(o.total || 0),
-  0
-);
+  // 💵 RECAUDADO
+  const totalRecaudado = ordenes.reduce((acc, o) => {
+    return acc + Number(o.total || 0);
+  }, 0);
 
-const restanteReal = Math.max(0, deudaTotal - totalRecaudado);
+  // 💸 RESTANTE
+  const restanteReal = Math.max(0, deudaTotal - totalRecaudado);
 
-const gananciaActual = totalRecaudado - inversionInicial;
-const gananciaTotal = deudaTotal - inversionInicial;
+  // 🔥 GANANCIAS
+  const gananciaActual = totalRecaudado - inversionInicial;
+  const gananciaTotal = deudaTotal - inversionInicial;
 
   // 📊 DATA SEGURA
   const data = [
