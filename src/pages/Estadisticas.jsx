@@ -116,29 +116,37 @@ const Estadisticas = () => {
       </div>
 
       {/* GRÁFICA */}
-      <div style={{ width: "100%", height: 400, marginTop: "40px" }}>
-        <h2>📊 Distribución real</h2>
-        <ResponsiveContainer>
-          <PieChart>
-            <Pie
-              data={data}
-              dataKey="value"
-              nameKey="name"
-              outerRadius={120}
-              label
-            >
-              {data.map((entry, index) => (
-  <Cell
-    key={`cell-${index}`}
-    fill={COLORS[index % COLORS.length]}
-  />
-))}
-            </Pie>
-            <Tooltip />
-            <Legend />
-          </PieChart>
-        </ResponsiveContainer>
-      </div>
+      <div
+  style={{
+    width: "100%",
+    height: "400px",
+    minHeight: "400px",
+    marginTop: "40px",
+  }}
+>
+  <h2>📊 Distribución real</h2>
+
+  <ResponsiveContainer width="100%" height="100%">
+    <PieChart>
+      <Pie
+        data={data}
+        dataKey="value"
+        nameKey="name"
+        outerRadius={120}
+        label
+      >
+        {data.map((entry, index) => (
+          <Cell
+            key={`cell-${index}`}
+            fill={COLORS[index % COLORS.length]}
+          />
+        ))}
+      </Pie>
+      <Tooltip />
+      <Legend />
+    </PieChart>
+  </ResponsiveContainer>
+</div>
     </div>
   );
 };
