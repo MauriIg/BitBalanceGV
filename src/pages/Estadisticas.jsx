@@ -44,7 +44,7 @@ const Estadisticas = () => {
   const totalRecaudado = useMemo(() => {
     return ordenes.reduce((acc, o) => {
       const totalOrden = (o.productos || []).reduce((sum, item) => {
-        return sum + Number(item.abono || 0);
+        return sum + Number(item.TU_CAMPO_REAL || 0);
       }, 0);
   
       return acc + totalOrden;
