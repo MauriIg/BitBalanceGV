@@ -44,7 +44,7 @@ const Estadisticas = () => {
 
   // 📈 TOTAL DEUDA
   const deudaTotal = listaProductos.reduce((acc, p) => {
-    return acc + Number(p.precio || 0);
+    return acc + Number(p.totalAPagar || p.precio || 0);
   }, 0);
 
   // 💵 RECAUDADO
@@ -106,7 +106,7 @@ const Estadisticas = () => {
         </div>
 
         <div style={cardStyle}>
-          <h3>🔥 Ganancia Total p</h3>
+          <h3>🔥 Ganancia Total</h3>
           <p
             style={{
               color: gananciaTotal >= 0 ? "green" : "red",
