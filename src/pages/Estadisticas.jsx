@@ -106,7 +106,7 @@ const Estadisticas = () => {
         </div>
 
         <div style={cardStyle}>
-          <h3>🔥 Ganancia Total</h3>
+          <h3>🔥 Ganancia Total p</h3>
           <p
             style={{
               color: gananciaTotal >= 0 ? "green" : "red",
