@@ -62,7 +62,7 @@ const Estadisticas = () => {
   // 📊 DATA SEGURA
   const data = [
     { name: "Recaudado", value: totalRecaudado || 0 },
-    { name: "Pendiente", value: restanteReal || 0 },
+    { name: "Pendiente", value: deudaTotal || 0 },
   ];
 
   const COLORS = ["#00C49F", "#FF8042"];
