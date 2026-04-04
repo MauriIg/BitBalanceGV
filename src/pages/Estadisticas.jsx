@@ -53,7 +53,7 @@ const Estadisticas = () => {
   }, 0);
 
   // 💸 RESTANTE
-  const restanteReal = Math.max(0, deudaTotal - totalRecaudado);
+
 
   // 🔥 GANANCIAS
   const gananciaActual = totalRecaudado - inversionInicial;
