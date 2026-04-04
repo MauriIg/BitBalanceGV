@@ -46,7 +46,7 @@ const Estadisticas = () => {
   }, 0);
 
   // 💸 LO QUE FALTA
-  const restanteReal = deudaTotal;
+  const restanteReal = deudaTotal - totalRecaudado;
 
   // 🔥 GANANCIA actual
   const gananciaActual = totalRecaudado - inversionInicial;
@@ -61,6 +61,10 @@ const Estadisticas = () => {
   ];
 
   const COLORS = ["#00C49F", "#FF8042"];
+
+  if (ordenes.length === 0) {
+    return <p>Cargando datos...</p>;
+  }
 
   return (
     <div style={{ padding: "20px" }}>
