@@ -44,6 +44,7 @@ const Estadisticas = () => {
   const totalRecaudado = ordenes.reduce((acc, o) => {
     return acc + Number(o.total || 0);
   }, 0);
+  console.log(ordenes);
 
   // 💸 LO QUE FALTA
   const restanteReal = deudaTotal - totalRecaudado;
