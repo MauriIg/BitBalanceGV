@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import axiosInstance from "../services/axiosInstance";
+import { useMemo } from "react";
 
 // 📊 Recharts
 import {
@@ -40,13 +41,14 @@ const Estadisticas = () => {
   }, 0);
 
   // 💵 RECAUDADO (pagos reales)
-  const totalRecaudado = ordenes.reduce((acc, o) => {
-    const totalOrden = o.productos.reduce((sum, item) => {
-      return sum + (item.abono || 0); // 🔥 AQUÍ ESTÁ EL FIX
+  const totalRecaudado = useMemo(() => {
+    return ordenes.reduce((acc, o) => {
+      const totalOrden = o.productos.reduce((sum, item) => {
+        return sum + (item.abono || 0);
+      }, 0);
+      return acc + totalOrden;
     }, 0);
-  
-    return acc + totalOrden;
-  }, 0);
+  }, [ordenes]);
 
   // 💸 LO QUE FALTA
   const restanteReal = deudaTotal;
