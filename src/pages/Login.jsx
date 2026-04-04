@@ -118,21 +118,7 @@ const Login = () => {
       </form>
       <div style={{ marginTop: "1rem", textAlign: "center" }}>
         <span>¿No tienes cuenta?</span>
-        <button
-          type="button"
-          onClick={() => navigate("/register")}
-          style={{
-            backgroundColor: "transparent",
-            border: "none",
-            color: "#007BFF",
-            cursor: "pointer",
-            fontWeight: "bold",
-            textDecoration: "underline",
-            marginLeft: "5px",
-          }}
-        >
-          Regístrate aquí
-        </button>
+        
         <p style={{ marginTop: "10px" }}>
           <button
             type="button"

@@ -155,9 +155,7 @@ const Products = () => {
         <button onClick={() => navigate("/admin/ordenes")} style={{ marginRight: "10px" }}>
           Historial de Pagos
         </button>
-        <button onClick={() => navigate("/asignaciones")} style={{ marginRight: "10px" }}>
-          Asignar Asesores
-        </button>
+        
         <button onClick={() => navigate("/asignar-rapiditos")} style={{ marginRight: "10px" }}>
           Panel Cobradores
         </button>
@@ -171,6 +169,9 @@ const Products = () => {
         <button onClick={() => navigate("/estadisticas")}>
   📊 Estadísticas
 </button>
+<button onClick={() => navigate("/register")} style={{ marginRight: "10px" }}>
+          Registrar Nvo Usuario
+        </button>
         <button
           onClick={handleLogout}
           style={{
