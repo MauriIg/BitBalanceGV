@@ -41,15 +41,9 @@ const Estadisticas = () => {
   }, 0);
 
   // 💵 RECAUDADO (pagos reales)
-  const totalRecaudado = useMemo(() => {
-    return ordenes.reduce((acc, o) => {
-      const totalOrden = (o.productos || []).reduce((sum, item) => {
-        return sum + Number(item.abono ?? item.total ?? 0);
-      }, 0);
-  
-      return acc + totalOrden;
-    }, 0);
-  }, [ordenes]);
+  const totalRecaudado = ordenes.reduce((acc, o) => {
+    return acc + Number(o.total || 0);
+  }, 0);
 
   // 💸 LO QUE FALTA
   const restanteReal = deudaTotal;
