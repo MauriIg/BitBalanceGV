@@ -74,7 +74,7 @@ const Estadisticas = () => {
 
   return (
     <div style={{ padding: "20px" }}>
-      <h1>📊 Estadísticas Financieras putito</h1>
+      <h1>📊 Estadísticas Financieras</h1>
 
       {/* CARDS */}
       <div style={{ display: "flex", gap: "20px", flexWrap: "wrap" }}>
