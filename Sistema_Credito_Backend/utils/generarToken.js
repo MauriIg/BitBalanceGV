@@ -1,4 +1,8 @@
 import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
+
+dotenv.config(); // 👈 ESTO FALTABA
+
 
 // Función para generar el token JWT
 const generarToken = (id, rol) => {

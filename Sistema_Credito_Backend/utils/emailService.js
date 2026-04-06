@@ -13,8 +13,7 @@ const transporter = nodemailer.createTransport({
     pass: process.env.EMAIL_PASS,
   },
 });
-console.log("📨 ENV EMAIL:", process.env.EMAIL_FROM);
-console.log("📨 ENV PASS:", process.env.EMAIL_PASS);
+
 
 // Función para enviar correos
 export const enviarCorreo = async (para, asunto, mensajeHTML) => {
